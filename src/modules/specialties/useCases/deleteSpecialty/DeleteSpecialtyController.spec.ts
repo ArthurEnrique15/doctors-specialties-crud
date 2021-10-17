@@ -8,7 +8,7 @@ import { app } from "@shared/infra/http/app";
 let connection: Connection;
 let specialtyRepository: SpecialtyRepository;
 
-describe("Remove specialty controller", () => {
+describe("Delete specialty controller", () => {
     beforeAll(async () => {
         connection = await createConnection();
         await connection.runMigrations();

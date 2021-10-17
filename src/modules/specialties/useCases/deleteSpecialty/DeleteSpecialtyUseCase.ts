@@ -5,7 +5,7 @@ import { ISpecialtyRepository } from "@modules/specialties/repositories/ISpecial
 import { AppError } from "@shared/errors/AppError";
 
 @injectable()
-class RemoveSpecialtyUseCase {
+class DeleteSpecialtyUseCase {
     constructor(
         @inject("SpecialtyRepository")
         private specialtyRepository: ISpecialtyRepository
@@ -16,7 +16,7 @@ class RemoveSpecialtyUseCase {
 
         if (!specialty) throw new AppError("Specialty doesn't exists!");
 
-        const removedSpecialty = await this.specialtyRepository.softRemove(
+        const removedSpecialty = await this.specialtyRepository.softDelete(
             specialty
         );
 
@@ -24,4 +24,4 @@ class RemoveSpecialtyUseCase {
     }
 }
 
-export { RemoveSpecialtyUseCase };
+export { DeleteSpecialtyUseCase };

@@ -28,10 +28,10 @@ class SpecialtyRepository implements ISpecialtyRepository {
         return updatedSpecialty;
     }
 
-    // async softRemove(specialty: Specialty): Promise<Specialty> {
-    //     const removedSpecialty = await this.repository.softRemove(specialty);
-    //     return removedSpecialty;
-    // }
+    async softDelete(specialty: Specialty): Promise<Specialty> {
+        const removedSpecialty = await this.repository.softRemove(specialty);
+        return removedSpecialty;
+    }
 
     // async recover(specialty: Specialty): Promise<Specialty> {
     //     const recoveredSpecialty = await this.repository.recover(specialty);

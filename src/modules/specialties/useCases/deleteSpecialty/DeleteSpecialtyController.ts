@@ -1,14 +1,14 @@
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
-import { RemoveSpecialtyUseCase } from "./RemoveSpecialtyUseCase";
+import { DeleteSpecialtyUseCase } from "./DeleteSpecialtyUseCase";
 
-class RemoveSpecialtyController {
+class DeleteSpecialtyController {
     async handle(request: Request, response: Response): Promise<Response> {
         const { id } = request.params;
 
         const removeSpecialtyUseCase = container.resolve(
-            RemoveSpecialtyUseCase
+            DeleteSpecialtyUseCase
         );
 
         const removedSpecialty = await removeSpecialtyUseCase.execute(id);
@@ -17,4 +17,4 @@ class RemoveSpecialtyController {
     }
 }
 
-export { RemoveSpecialtyController };
+export { DeleteSpecialtyController };

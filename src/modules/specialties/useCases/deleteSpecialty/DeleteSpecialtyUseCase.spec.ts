@@ -1,14 +1,14 @@
 import { SpecialtyRepositoryInMemory } from "@modules/specialties/repositories/in-memory/SpecialtyRepositoryInMemory";
-import { RemoveSpecialtyUseCase } from "@modules/specialties/useCases/removeSpecialty/RemoveSpecialtyUseCase";
+import { DeleteSpecialtyUseCase } from "@modules/specialties/useCases/removeSpecialty/DeleteSpecialtyUseCase";
 import { AppError } from "@shared/errors/AppError";
 
-let removeSpecialtyUseCase: RemoveSpecialtyUseCase;
+let removeSpecialtyUseCase: DeleteSpecialtyUseCase;
 let specialtyRepositoryInMemory: SpecialtyRepositoryInMemory;
 
-describe("Remove specialty", () => {
+describe("Delete specialty", () => {
     beforeEach(() => {
         specialtyRepositoryInMemory = new SpecialtyRepositoryInMemory();
-        removeSpecialtyUseCase = new RemoveSpecialtyUseCase(
+        removeSpecialtyUseCase = new DeleteSpecialtyUseCase(
             specialtyRepositoryInMemory
         );
     });
@@ -19,11 +19,11 @@ describe("Remove specialty", () => {
             description: "description_test",
         });
 
-        const specialtyRemoved = await removeSpecialtyUseCase.execute(
+        const specialtyDeleted = await removeSpecialtyUseCase.execute(
             specialty.id
         );
 
-        expect(specialtyRemoved.deleted_at).not.toBe(null);
+        expect(specialtyDeleted.deleted_at).not.toBe(null);
     });
 
     it("Should not be able to remove a specialty that doesn't exists", async () => {
