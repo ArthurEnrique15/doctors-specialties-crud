@@ -6,8 +6,7 @@ import { AppError } from "@shared/errors/AppError";
 
 interface IRequest {
     id: string;
-    name?: string;
-    description?: string;
+    name: string;
 }
 
 @injectable()
@@ -17,13 +16,12 @@ class UpdateSpecialtyUseCase {
         private specialtyRepository: ISpecialtyRepository
     ) {}
 
-    async execute({ id, name, description }: IRequest): Promise<Specialty> {
+    async execute({ id, name }: IRequest): Promise<Specialty> {
         const specialtyExists = await this.specialtyRepository.findById(id);
 
         if (!specialtyExists) throw new AppError("Specialty doesn't exists!");
 
-        if (!name && !description)
-            throw new AppError("There's no information to update!");
+        if (!name) throw new AppError("There's no information to update!");
 
         const specialtyAlreadyExists =
             await this.specialtyRepository.findByName(name);
@@ -34,7 +32,6 @@ class UpdateSpecialtyUseCase {
         const updatedSpecialty = await this.specialtyRepository.update({
             id,
             name,
-            description,
         });
 
         return updatedSpecialty;
