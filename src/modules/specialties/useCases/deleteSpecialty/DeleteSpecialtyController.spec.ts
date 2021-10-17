@@ -23,7 +23,6 @@ describe("Delete specialty controller", () => {
     it("Should be able to remove a specialty", async () => {
         const specialty = await specialtyRepository.create({
             name: "specialty_test",
-            description: "description_test",
         });
 
         const response = await request(app)

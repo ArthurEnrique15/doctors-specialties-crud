@@ -1,5 +1,5 @@
 import { SpecialtyRepositoryInMemory } from "@modules/specialties/repositories/in-memory/SpecialtyRepositoryInMemory";
-import { DeleteSpecialtyUseCase } from "@modules/specialties/useCases/removeSpecialty/DeleteSpecialtyUseCase";
+import { DeleteSpecialtyUseCase } from "@modules/specialties/useCases/deleteSpecialty/DeleteSpecialtyUseCase";
 import { AppError } from "@shared/errors/AppError";
 
 let removeSpecialtyUseCase: DeleteSpecialtyUseCase;
@@ -16,7 +16,6 @@ describe("Delete specialty", () => {
     it("Should be able to remove a specialty", async () => {
         const specialty = await specialtyRepositoryInMemory.create({
             name: "specialty_test",
-            description: "description_test",
         });
 
         const specialtyDeleted = await removeSpecialtyUseCase.execute(
