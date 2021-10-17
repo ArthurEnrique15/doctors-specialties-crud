@@ -43,10 +43,10 @@ class SpecialtyRepository implements ISpecialtyRepository {
     //     return recoveredSpecialty;
     // }
 
-    // async list(): Promise<Specialty[]> {
-    //     const specialties = await this.repository.find();
-    //     return specialties;
-    // }
+    async list(): Promise<Specialty[]> {
+        const specialties = await this.repository.find();
+        return specialties;
+    }
 
     async findByName(name: string): Promise<Specialty> {
         const specialty = await this.repository.findOne({ name });

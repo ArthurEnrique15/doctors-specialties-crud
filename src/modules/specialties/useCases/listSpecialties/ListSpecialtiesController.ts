@@ -5,7 +5,9 @@ import { ListSpecialtiesUseCase } from "./ListSpecialtiesUseCase";
 
 class ListSpecialtiesController {
     async handle(request: Request, response: Response): Promise<Response> {
-        const listSpecialtiesUseCase = container.resolve(ListSpecialtiesUseCase);
+        const listSpecialtiesUseCase = container.resolve(
+            ListSpecialtiesUseCase
+        );
 
         const allSpecialties = await listSpecialtiesUseCase.execute();
 

@@ -7,7 +7,7 @@ interface ISpecialtyRepository {
     // update({ id, name, description }: IUpdateSpecialtyDTO): Promise<Specialty>;
     // softRemove(specialty: Specialty): Promise<Specialty>;
     // recover(specialty: Specialty): Promise<Specialty>;
-    // list(): Promise<Specialty[]>;
+    list(): Promise<Specialty[]>;
     findByName(name: string): Promise<Specialty>;
     // findById(id: string): Promise<Specialty>;
     // findDeletedById(id: string): Promise<Specialty>;
