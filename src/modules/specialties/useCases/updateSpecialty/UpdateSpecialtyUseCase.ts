@@ -21,7 +21,7 @@ class UpdateSpecialtyUseCase {
 
         if (!specialtyExists) throw new AppError("Specialty doesn't exists!");
 
-        if (!name) throw new AppError("There's no information to update!");
+        if (!name) throw new AppError("A name must be sent!");
 
         const specialtyAlreadyExists =
             await this.specialtyRepository.findByName(name);

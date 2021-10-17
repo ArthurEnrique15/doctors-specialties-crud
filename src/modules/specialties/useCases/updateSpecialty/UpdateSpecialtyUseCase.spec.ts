@@ -17,18 +17,15 @@ describe("Update specialty", () => {
     it("Should be able to update a specialty", async () => {
         const { id } = await specialtyRepositoryInMemory.create({
             name: "specialty_test",
-            description: "description_test",
         });
 
         const updatedSpecialty = await updateSpecialtyUseCase.execute({
             id,
             name: "updated_specialty_test",
-            description: "updated_description_test",
         });
 
         expect(updatedSpecialty.updated_at).not.toBe(null);
         expect(updatedSpecialty.name).toBe("updated_specialty_test");
-        expect(updatedSpecialty.description).toBe("updated_description_test");
     });
 
     it("Should not be able to update a specialty that doesn't exists", async () => {
@@ -40,23 +37,22 @@ describe("Update specialty", () => {
         ).rejects.toEqual(new AppError("Specialty doesn't exists!"));
     });
 
-    it("Should not be able to update a specialty without sending a name or description", async () => {
+    it("Should not be able to update a specialty without sending a name", async () => {
         const specialtyCreated = await specialtyRepositoryInMemory.create({
             name: "specialty_test",
-            description: "description_test",
         });
 
         await expect(
             updateSpecialtyUseCase.execute({
                 id: specialtyCreated.id,
+                name: undefined,
             })
-        ).rejects.toEqual(new AppError("There's no information to update!"));
+        ).rejects.toEqual(new AppError("A name must be sent!"));
     });
 
     it("Should not be able to update a specialty sending an existing name", async () => {
         const specialtyCreated = await specialtyRepositoryInMemory.create({
             name: "specialty_test",
-            description: "description_test",
         });
 
         await expect(

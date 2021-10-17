@@ -23,7 +23,6 @@ describe("Update specialty controller", () => {
     it("Should be able to update a specialty", async () => {
         const specialtyCreated = await specialtyRepository.create({
             name: "specialty_test",
-            description: "description_test",
         });
 
         const response = await request(app)
@@ -47,10 +46,9 @@ describe("Update specialty controller", () => {
         expect(response.status).toBe(400);
     });
 
-    it("Should not be able to update a specialty without sending a name or description", async () => {
+    it("Should not be able to update a specialty without sending a name", async () => {
         const specialtyCreated = await specialtyRepository.create({
             name: "specialty_test",
-            description: "description_test",
         });
 
         const response = await request(app)
@@ -63,7 +61,6 @@ describe("Update specialty controller", () => {
     it("Should not be able to update a specialty sending an existing name", async () => {
         const specialtyCreated = await specialtyRepository.create({
             name: "specialty_test",
-            description: "description_test",
         });
 
         const response = await request(app)
