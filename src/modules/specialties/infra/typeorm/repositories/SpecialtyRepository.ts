@@ -33,10 +33,10 @@ class SpecialtyRepository implements ISpecialtyRepository {
         return removedSpecialty;
     }
 
-    // async recover(specialty: Specialty): Promise<Specialty> {
-    //     const recoveredSpecialty = await this.repository.recover(specialty);
-    //     return recoveredSpecialty;
-    // }
+    async recover(specialty: Specialty): Promise<Specialty> {
+        const recoveredSpecialty = await this.repository.recover(specialty);
+        return recoveredSpecialty;
+    }
 
     async list(): Promise<Specialty[]> {
         const specialties = await this.repository.find();
@@ -53,16 +53,16 @@ class SpecialtyRepository implements ISpecialtyRepository {
         return specialty;
     }
 
-    // async findDeletedById(id: string): Promise<Specialty> {
-    //     const deletedSpecialty = await this.repository
-    //         .createQueryBuilder()
-    //         .where("id = :id", { id })
-    //         .andWhere("deleted_at IS NOT NULL")
-    //         .withDeleted()
-    //         .getOne();
+    async findDeletedById(id: string): Promise<Specialty> {
+        const deletedSpecialty = await this.repository
+            .createQueryBuilder()
+            .where("id = :id", { id })
+            .andWhere("deleted_at IS NOT NULL")
+            .withDeleted()
+            .getOne();
 
-    //     return deletedSpecialty;
-    // }
+        return deletedSpecialty;
+    }
 
     // async findByNameDisregardId(id: string, name: string): Promise<Specialty> {
     //     const specialty = await this.repository
