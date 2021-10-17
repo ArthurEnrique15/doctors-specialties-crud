@@ -16,7 +16,6 @@ describe("Create specialty", () => {
     it("Should be able to create a new specialty", async () => {
         const specialtyCreated = await createSpecialtyUseCase.execute({
             name: "specialty_test",
-            description: "description_test",
         });
 
         expect(specialtyCreated).toHaveProperty("id");
@@ -25,13 +24,11 @@ describe("Create specialty", () => {
     it("Should not be able to create a new specialty with an existing name", async () => {
         await createSpecialtyUseCase.execute({
             name: "specialty_test",
-            description: "description_test",
         });
 
         await expect(
             createSpecialtyUseCase.execute({
                 name: "specialty_test",
-                description: "description_test",
             })
         ).rejects.toEqual(new AppError("Specialty already exists!"));
     });

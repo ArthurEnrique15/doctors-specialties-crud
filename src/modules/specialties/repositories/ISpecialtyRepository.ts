@@ -13,7 +13,6 @@ interface ISpecialtyRepository {
     findByName(name: string): Promise<Specialty>;
     findById(id: string): Promise<Specialty>;
     findDeletedById(id: string): Promise<Specialty>;
-    // findByNameDisregardId(id: string, name: string): Promise<Specialty>;
 }
 
 export { ISpecialtyRepository };

@@ -63,16 +63,6 @@ class SpecialtyRepository implements ISpecialtyRepository {
 
         return deletedSpecialty;
     }
-
-    // async findByNameDisregardId(id: string, name: string): Promise<Specialty> {
-    //     const specialty = await this.repository
-    //         .createQueryBuilder()
-    //         .where("name = :name", { name })
-    //         .andWhere("id != :id", { id })
-    //         .getOne();
-
-    //     return specialty;
-    // }
 }
 
 export { SpecialtyRepository };

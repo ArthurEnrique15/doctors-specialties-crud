@@ -19,7 +19,6 @@ describe("Create specialty controller", () => {
     it("Should be able to create a new specialty", async () => {
         const response = await request(app).post("/specialties").send({
             name: "specialty_test",
-            description: "description_test",
         });
 
         expect(response.status).toBe(201);
@@ -28,7 +27,6 @@ describe("Create specialty controller", () => {
     it("Should not be able to create a new specialty with an existing name", async () => {
         const response = await request(app).post("/specialties").send({
             name: "specialty_test",
-            description: "description_test",
         });
 
         expect(response.status).toBe(400);

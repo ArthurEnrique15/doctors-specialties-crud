@@ -11,7 +11,7 @@ class CreateSpecialtyController {
             CreateSpecialtyUseCase
         );
 
-        const createdSpecialty = await createSpecialtyUseCase.execute(name);
+        const createdSpecialty = await createSpecialtyUseCase.execute({ name });
 
         return response.status(201).json(createdSpecialty);
     }
