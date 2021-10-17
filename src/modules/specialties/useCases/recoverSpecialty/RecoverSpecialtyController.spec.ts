@@ -23,10 +23,9 @@ describe("Recover specialty controller", () => {
     it("Should be able to recover a specialty", async () => {
         const specialty = await specialtyRepository.create({
             name: "specialty_test",
-            description: "description_test",
         });
 
-        specialtyRepository.softRemove(specialty);
+        specialtyRepository.softDelete(specialty);
 
         const response = await request(app)
             .put(`/specialties/recover/${specialty.id}`)

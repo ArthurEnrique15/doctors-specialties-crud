@@ -16,10 +16,9 @@ describe("Recover specialty", () => {
     it("Should be able to recover a deleted specialty", async () => {
         const specialty = await specialtyRepositoryInMemory.create({
             name: "specialty_test",
-            description: "description_test",
         });
 
-        await specialtyRepositoryInMemory.softRemove(specialty);
+        await specialtyRepositoryInMemory.softDelete(specialty);
 
         const specialtyRecovered = await recoverSpecialtyUseCase.execute(
             specialty.id
