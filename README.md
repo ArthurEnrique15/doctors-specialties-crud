@@ -1,2 +1,2 @@
-# doctors_specialties-crud
+# doctors-specialties-crud
 CRUD de médicos e especialidades

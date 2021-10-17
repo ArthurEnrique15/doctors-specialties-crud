@@ -1,8 +1,8 @@
 FROM node
 
-RUN mkdir -p /home/root/app/node_modules && chown -R root:root /home/root/app
+RUN mkdir -p /home/root/api_test_gcb/node_modules && chown -R root:root /home/root/api_test_gcb
 
-WORKDIR /home/root/app
+WORKDIR /home/root/api_test_gcb
 
 COPY package.json yarn.* ./
 

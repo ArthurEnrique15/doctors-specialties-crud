@@ -4,7 +4,7 @@ import express, { NextFunction, Response, Request } from "express";
 import "express-async-errors";
 // import swaggerUi from "swagger-ui-express";
 
-// import "@shared/container";
+import "@shared/container";
 import { AppError } from "@shared/errors/AppError";
 import { router } from "@shared/infra/http/routes";
 import "@shared/infra/typeorm";
