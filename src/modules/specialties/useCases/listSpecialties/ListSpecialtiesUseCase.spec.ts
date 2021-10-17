@@ -16,7 +16,6 @@ describe("List specialties", () => {
     it("Should be able to list all specialties", async () => {
         await specialtyRepositoryInMemory.create({
             name: "specialty_test",
-            description: "description_test",
         });
 
         const specialties = await listSpecialtiesUseCase.execute();

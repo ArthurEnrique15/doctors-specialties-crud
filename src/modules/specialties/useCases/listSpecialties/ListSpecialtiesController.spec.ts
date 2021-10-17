@@ -22,7 +22,6 @@ describe("List specialties controller", () => {
     it("Should be able to list all specialties", async () => {
         await specialtyRepository.create({
             name: "specialty_test",
-            description: "description_test",
         });
 
         const response = await request(app).get("/specialties").send();
