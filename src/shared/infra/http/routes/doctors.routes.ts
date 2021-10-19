@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-// import { CreateDoctorController } from "@modules/doctors/useCases/createDoctor/CreateDoctorController";
+import { CreateDoctorController } from "@modules/doctors/useCases/createDoctor/CreateDoctorController";
 // import { DeleteDoctorController } from "@modules/doctors/useCases/deleteDoctor/DeleteDoctorController";
 // import { ListDoctorsController } from "@modules/doctors/useCases/listDoctors/ListDoctorsController";
 // import { RecoverDoctorController } from "@modules/doctors/useCases/recoverDoctor/RecoverDoctorController";
@@ -8,13 +8,13 @@ import { Router } from "express";
 
 const doctorsRoutes = Router();
 
-// const createDoctorController = new CreateDoctorController();
+const createDoctorController = new CreateDoctorController();
 // const listDoctorsController = new ListDoctorsController();
 // const updateDoctorController = new UpdateDoctorController();
 // const deleteDoctorController = new DeleteDoctorController();
 // const recoverDoctorController = new RecoverDoctorController();
 
-// doctorsRoutes.post("/", createDoctorController.handle);
+doctorsRoutes.post("/", createDoctorController.handle);
 // doctorsRoutes.put("/update/:id", updateDoctorController.handle);
 // doctorsRoutes.get("/", listDoctorsController.handle);
 // doctorsRoutes.delete("/delete/:id", deleteDoctorController.handle);

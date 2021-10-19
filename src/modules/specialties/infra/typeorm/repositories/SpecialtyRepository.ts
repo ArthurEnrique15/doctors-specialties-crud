@@ -1,4 +1,4 @@
-import { getRepository, Repository } from "typeorm";
+import { getRepository, In, Repository } from "typeorm";
 
 import { ICreateSpecialtyDTO } from "@modules/specialties/dtos/ICreateSpecialtyDTO";
 import { IUpdateSpecialtyDTO } from "@modules/specialties/dtos/IUpdateSpecialtyDTO";
@@ -46,6 +46,14 @@ class SpecialtyRepository implements ISpecialtyRepository {
     async findByName(name: string): Promise<Specialty> {
         const specialty = await this.repository.findOne({ name });
         return specialty;
+    }
+
+    async findByNames(names: string[]): Promise<Specialty[]> {
+        const specialties = await this.repository.find({
+            where: { name: In(names) },
+        });
+
+        return specialties;
     }
 
     async findById(id: string): Promise<Specialty> {

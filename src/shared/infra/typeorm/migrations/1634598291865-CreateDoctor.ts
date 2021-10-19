@@ -28,11 +28,11 @@ export class CreateDoctor1634598291865 implements MigrationInterface {
                         type: "varchar",
                     },
                     {
-                        name: "telefone_fixo",
+                        name: "landline",
                         type: "varchar",
                     },
                     {
-                        name: "telefone_celular",
+                        name: "cellphone",
                         type: "varchar",
                     },
                     {

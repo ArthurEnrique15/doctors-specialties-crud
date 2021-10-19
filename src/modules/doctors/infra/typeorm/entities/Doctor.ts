@@ -24,7 +24,13 @@ class Doctor {
     name: string;
 
     @Column()
-    cpf: string;
+    crm: string;
+
+    @Column()
+    landline: string;
+
+    @Column()
+    cellphone: string;
 
     @OneToOne(() => Address, { eager: true })
     @JoinColumn()

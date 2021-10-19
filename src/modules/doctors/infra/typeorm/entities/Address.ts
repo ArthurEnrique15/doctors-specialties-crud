@@ -2,8 +2,6 @@ import {
     Column,
     Entity,
     PrimaryGeneratedColumn,
-    CreateDateColumn,
-    UpdateDateColumn,
     DeleteDateColumn,
 } from "typeorm";
 
@@ -32,12 +30,6 @@ class Address {
 
     @Column()
     uf: string;
-
-    @CreateDateColumn()
-    created_at?: Date;
-
-    @UpdateDateColumn()
-    updated_at?: Date;
 
     @DeleteDateColumn()
     deleted_at?: Date;
