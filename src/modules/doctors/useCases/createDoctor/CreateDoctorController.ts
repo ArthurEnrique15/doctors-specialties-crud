@@ -1,4 +1,5 @@
 import { Response, Request } from "express";
+import { validationResult } from "express-validator";
 import { container } from "tsyringe";
 
 import { CreateDoctorUseCase } from "./CreateDoctorUseCase";
@@ -14,6 +15,11 @@ class CreateDoctorController {
             numero,
             specialties_names,
         } = request.body;
+
+        const errors = validationResult(request);
+
+        if (!errors.isEmpty())
+            return response.status(400).json({ errors: errors.array() });
 
         const createDoctorUseCase = container.resolve(CreateDoctorUseCase);
 

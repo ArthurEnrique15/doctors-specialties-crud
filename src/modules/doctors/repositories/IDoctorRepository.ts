@@ -14,7 +14,7 @@ interface IDoctorRepository {
     // update({ id, name }: IUpdateDoctorDTO): Promise<Doctor>;
     // softDelete(specialty: Doctor): Promise<Doctor>;
     // recover(specialty: Doctor): Promise<Doctor>;
-    // list(): Promise<Doctor[]>;
+    list(): Promise<Doctor[]>;
     // findByName(name: string): Promise<Doctor>;
     // findById(id: string): Promise<Doctor>;
     // findDeletedById(id: string): Promise<Doctor>;

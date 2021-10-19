@@ -36,7 +36,7 @@ class Doctor {
     @JoinColumn()
     address: Address;
 
-    @ManyToMany(() => Specialty)
+    @ManyToMany(() => Specialty, { eager: true })
     @JoinTable({
         // Nome da tabela do many to many
         name: "doctors_specialties",
