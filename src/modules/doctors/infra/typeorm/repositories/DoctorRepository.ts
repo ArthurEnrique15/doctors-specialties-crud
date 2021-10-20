@@ -1,7 +1,7 @@
 import { getRepository, Repository } from "typeorm";
 
 import { ICreateDoctorDTO } from "@modules/doctors/dtos/ICreateDoctorDTO";
-// import { IUpdateDoctorDTO } from "@modules/doctors/dtos/IUpdateDoctorDTO";
+import { IUpdateDoctorDTO } from "@modules/doctors/dtos/IUpdateDoctorDTO";
 import { IDoctorRepository } from "@modules/doctors/repositories/IDoctorRepository";
 
 import { Doctor } from "../entities/Doctor";
@@ -33,14 +33,27 @@ class DoctorRepository implements IDoctorRepository {
         return doctor;
     }
 
-    // async update({ id, name }: IUpdateDoctorDTO): Promise<Doctor> {
-    //     const updatedDoctor = await this.repository.save({
-    //         id,
-    //         name,
-    //     });
+    async update({
+        id,
+        name,
+        crm,
+        landline,
+        cellphone,
+        address,
+        specialties,
+    }: IUpdateDoctorDTO): Promise<Doctor> {
+        const updatedDoctor = await this.repository.save({
+            id,
+            name,
+            crm,
+            landline,
+            cellphone,
+            address,
+            specialties,
+        });
 
-    //     return updatedDoctor;
-    // }
+        return updatedDoctor;
+    }
 
     async softDelete(doctor: Doctor): Promise<Doctor> {
         const removedDoctor = await this.repository.softRemove(doctor);
@@ -76,6 +89,11 @@ class DoctorRepository implements IDoctorRepository {
             .getOne();
 
         return deletedDoctor;
+    }
+
+    async findByCrm(crm: string): Promise<Doctor> {
+        const doctor = await this.repository.findOne({ crm });
+        return doctor;
     }
 }
 

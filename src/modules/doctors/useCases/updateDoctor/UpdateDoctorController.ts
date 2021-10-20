@@ -2,15 +2,16 @@ import { Response, Request } from "express";
 import { validationResult } from "express-validator";
 import { container } from "tsyringe";
 
-import { CreateDoctorUseCase } from "./CreateDoctorUseCase";
+import { UpdateDoctorUseCase } from "./UpdateDoctorUseCase";
 
-class CreateDoctorController {
+class UpdateDoctorController {
     async handle(request: Request, response: Response): Promise<Response> {
         const errors = validationResult(request);
 
         if (!errors.isEmpty())
             return response.status(400).json({ errors: errors.array() });
 
+        const { id } = request.params;
         const {
             name,
             crm,
@@ -21,9 +22,10 @@ class CreateDoctorController {
             specialties_names,
         } = request.body;
 
-        const createDoctorUseCase = container.resolve(CreateDoctorUseCase);
+        const updateDoctorUseCase = container.resolve(UpdateDoctorUseCase);
 
-        const createdDoctor = await createDoctorUseCase.execute({
+        const updatedDoctor = await updateDoctorUseCase.execute({
+            id,
             name,
             crm,
             landline,
@@ -33,8 +35,8 @@ class CreateDoctorController {
             specialties_names,
         });
 
-        return response.status(201).json(createdDoctor);
+        return response.json(updatedDoctor);
     }
 }
 
-export { CreateDoctorController };
+export { UpdateDoctorController };
