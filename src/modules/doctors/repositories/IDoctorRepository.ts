@@ -1,4 +1,5 @@
 import { ICreateDoctorDTO } from "../dtos/ICreateDoctorDTO";
+import { IFilterDoctorsDTO } from "../dtos/IFilterDoctorsDTO";
 import { IUpdateDoctorDTO } from "../dtos/IUpdateDoctorDTO";
 import { Doctor } from "../infra/typeorm/entities/Doctor";
 
@@ -27,6 +28,20 @@ interface IDoctorRepository {
     findById(id: string): Promise<Doctor>;
     findDeletedById(id: string): Promise<Doctor>;
     findByCrm(crm: string): Promise<Doctor>;
+    filterDoctors({
+        name,
+        crm,
+        landline,
+        cellphone,
+        cep,
+        logradouro,
+        complemento,
+        numero,
+        bairro,
+        localidade,
+        uf,
+        specialties_names,
+    }: IFilterDoctorsDTO): Promise<Doctor[]>;
 }
 
 export { IDoctorRepository };

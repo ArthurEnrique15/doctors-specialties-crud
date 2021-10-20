@@ -3,6 +3,7 @@ import { check } from "express-validator";
 
 import { CreateDoctorController } from "@modules/doctors/useCases/createDoctor/CreateDoctorController";
 import { DeleteDoctorController } from "@modules/doctors/useCases/deleteDoctor/DeleteDoctorController";
+import { FilterDoctorsController } from "@modules/doctors/useCases/filterDoctors/FilterDoctorsController";
 import { ListDoctorsController } from "@modules/doctors/useCases/listDoctors/ListDoctorsController";
 import { RecoverDoctorController } from "@modules/doctors/useCases/recoverDoctor/RecoverDoctorController";
 import { UpdateDoctorController } from "@modules/doctors/useCases/updateDoctor/UpdateDoctorController";
@@ -14,6 +15,7 @@ const listDoctorsController = new ListDoctorsController();
 const updateDoctorController = new UpdateDoctorController();
 const deleteDoctorController = new DeleteDoctorController();
 const recoverDoctorController = new RecoverDoctorController();
+const filterDoctorsController = new FilterDoctorsController();
 
 const doctorNameChain = check("name")
     .isString()
@@ -75,6 +77,7 @@ doctorsRoutes.post(
 
     createDoctorController.handle
 );
+
 doctorsRoutes.put(
     "/update/:id",
     doctorNameChain.optional(),
@@ -85,6 +88,18 @@ doctorsRoutes.put(
     doctorNumeroChain.optional(),
     doctorSpecialtiesChain.optional(),
     updateDoctorController.handle
+);
+
+doctorsRoutes.get(
+    "/filter",
+    doctorNameChain.optional(),
+    doctorCrmChain.optional(),
+    doctorLandlineChain.optional(),
+    doctorCellphoneChain.optional(),
+    doctorCepChain.optional(),
+    doctorNumeroChain.optional(),
+    // doctorSpecialtiesChain.optional(),
+    filterDoctorsController.handle
 );
 doctorsRoutes.get("/", listDoctorsController.handle);
 doctorsRoutes.delete("/delete/:id", deleteDoctorController.handle);
