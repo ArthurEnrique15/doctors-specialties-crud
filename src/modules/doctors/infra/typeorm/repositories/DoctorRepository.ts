@@ -111,9 +111,7 @@ class DoctorRepository implements IDoctorRepository {
         uf,
         specialties_names,
     }: IFilterDoctorsDTO): Promise<Doctor[]> {
-        const filterDoctorsQuery = await this.repository.createQueryBuilder(
-            "doctor"
-        );
+        const filterDoctorsQuery = this.repository.createQueryBuilder("doctor");
 
         if (name) filterDoctorsQuery.andWhere("doctor.name = :name", { name });
 
