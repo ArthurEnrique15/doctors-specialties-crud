@@ -30,7 +30,7 @@ describe("Delete doctor controller", () => {
         await connection.close();
     });
 
-    it("Should be able to remove a doctor", async () => {
+    it("Should be able to delete a doctor", async () => {
         const specialty_1 = await specialtyRepository.findByName("Alergologia");
         const specialty_2 = await specialtyRepository.findByName("Angiologia");
 
@@ -54,7 +54,7 @@ describe("Delete doctor controller", () => {
         expect(response.status).toBe(200);
     });
 
-    it("Should not be able to remove a doctor that doesn't exists", async () => {
+    it("Should not be able to delete a doctor that doesn't exists", async () => {
         const response = await request(app)
             .delete(`/doctors/delete/${uuidV4()}`)
             .send();

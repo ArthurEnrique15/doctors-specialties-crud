@@ -102,7 +102,6 @@ doctorsRoutes.get(
     doctorCellphoneChain.optional(),
     doctorCepChain.optional(),
     doctorNumeroChain.optional(),
-    // doctorSpecialtiesChain.optional(),
     filterDoctorsController.handle
 );
 doctorsRoutes.get("/", listDoctorsController.handle);

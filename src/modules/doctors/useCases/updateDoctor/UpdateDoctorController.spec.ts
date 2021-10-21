@@ -22,6 +22,22 @@ describe("Update doctor controller", () => {
         addressProvider = new AddressProvider();
         addressRepository = new AddressRepository();
         specialtyRepository = new SpecialtyRepository();
+
+        const specialty_1 = await specialtyRepository.findByName("Alergologia");
+        const specialty_2 = await specialtyRepository.findByName("Angiologia");
+
+        const address = await addressProvider.getAddress("35930209", 131);
+
+        const createdAddress = await addressRepository.save(address);
+
+        await doctorRepository.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address: createdAddress,
+            specialties: [specialty_1, specialty_2],
+        });
     });
 
     afterAll(async () => {
@@ -30,21 +46,7 @@ describe("Update doctor controller", () => {
     });
 
     it("Should be able to update a doctor", async () => {
-        const specialty_1 = await specialtyRepository.findByName("Alergologia");
-        const specialty_2 = await specialtyRepository.findByName("Angiologia");
-
-        const address = await addressProvider.getAddress("35930209", 131);
-
-        const createdAddress = await addressRepository.save(address);
-
-        const doctor = await doctorRepository.create({
-            name: "doctor_test",
-            crm: "1",
-            landline: "3138520776",
-            cellphone: "31938520776",
-            address: createdAddress,
-            specialties: [specialty_1, specialty_2],
-        });
+        const doctor = await doctorRepository.findByCrm("1");
 
         const response = await request(app)
             .put(`/doctors/update/${doctor.id}`)
@@ -61,21 +63,7 @@ describe("Update doctor controller", () => {
     });
 
     it("Should not be able to update a doctor sending a non string name", async () => {
-        const specialty_1 = await specialtyRepository.findByName("Alergologia");
-        const specialty_2 = await specialtyRepository.findByName("Angiologia");
-
-        const address = await addressProvider.getAddress("35930209", 131);
-
-        const createdAddress = await addressRepository.save(address);
-
-        const doctor = await doctorRepository.create({
-            name: "doctor_test",
-            crm: "1",
-            landline: "3138520776",
-            cellphone: "31938520776",
-            address: createdAddress,
-            specialties: [specialty_1, specialty_2],
-        });
+        const doctor = await doctorRepository.findByCrm("1");
 
         const response = await request(app)
             .put(`/doctors/update/${doctor.id}`)
@@ -87,21 +75,7 @@ describe("Update doctor controller", () => {
     });
 
     it("Should not be able to update a doctor sending an empty name", async () => {
-        const specialty_1 = await specialtyRepository.findByName("Alergologia");
-        const specialty_2 = await specialtyRepository.findByName("Angiologia");
-
-        const address = await addressProvider.getAddress("35930209", 131);
-
-        const createdAddress = await addressRepository.save(address);
-
-        const doctor = await doctorRepository.create({
-            name: "doctor_test",
-            crm: "1",
-            landline: "3138520776",
-            cellphone: "31938520776",
-            address: createdAddress,
-            specialties: [specialty_1, specialty_2],
-        });
+        const doctor = await doctorRepository.findByCrm("1");
 
         const response = await request(app)
             .put(`/doctors/update/${doctor.id}`)
@@ -113,21 +87,7 @@ describe("Update doctor controller", () => {
     });
 
     it("Should not be able to update a doctor sending a name with more than 120 characters", async () => {
-        const specialty_1 = await specialtyRepository.findByName("Alergologia");
-        const specialty_2 = await specialtyRepository.findByName("Angiologia");
-
-        const address = await addressProvider.getAddress("35930209", 131);
-
-        const createdAddress = await addressRepository.save(address);
-
-        const doctor = await doctorRepository.create({
-            name: "doctor_test",
-            crm: "1",
-            landline: "3138520776",
-            cellphone: "31938520776",
-            address: createdAddress,
-            specialties: [specialty_1, specialty_2],
-        });
+        const doctor = await doctorRepository.findByCrm("1");
 
         const response = await request(app)
             .put(`/doctors/update/${doctor.id}`)
@@ -139,21 +99,7 @@ describe("Update doctor controller", () => {
     });
 
     it("Should not be able to update a doctor sending a non string crm", async () => {
-        const specialty_1 = await specialtyRepository.findByName("Alergologia");
-        const specialty_2 = await specialtyRepository.findByName("Angiologia");
-
-        const address = await addressProvider.getAddress("35930209", 131);
-
-        const createdAddress = await addressRepository.save(address);
-
-        const doctor = await doctorRepository.create({
-            name: "doctor_test",
-            crm: "1",
-            landline: "3138520776",
-            cellphone: "31938520776",
-            address: createdAddress,
-            specialties: [specialty_1, specialty_2],
-        });
+        const doctor = await doctorRepository.findByCrm("1");
 
         const response = await request(app)
             .put(`/doctors/update/${doctor.id}`)
@@ -165,21 +111,7 @@ describe("Update doctor controller", () => {
     });
 
     it("Should not be able to update a doctor sending an empty crm", async () => {
-        const specialty_1 = await specialtyRepository.findByName("Alergologia");
-        const specialty_2 = await specialtyRepository.findByName("Angiologia");
-
-        const address = await addressProvider.getAddress("35930209", 131);
-
-        const createdAddress = await addressRepository.save(address);
-
-        const doctor = await doctorRepository.create({
-            name: "doctor_test",
-            crm: "1",
-            landline: "3138520776",
-            cellphone: "31938520776",
-            address: createdAddress,
-            specialties: [specialty_1, specialty_2],
-        });
+        const doctor = await doctorRepository.findByCrm("1");
 
         const response = await request(app)
             .put(`/doctors/update/${doctor.id}`)
@@ -191,21 +123,7 @@ describe("Update doctor controller", () => {
     });
 
     it("Should not be able to update a doctor sending a crm with more than 7 numbers", async () => {
-        const specialty_1 = await specialtyRepository.findByName("Alergologia");
-        const specialty_2 = await specialtyRepository.findByName("Angiologia");
-
-        const address = await addressProvider.getAddress("35930209", 131);
-
-        const createdAddress = await addressRepository.save(address);
-
-        const doctor = await doctorRepository.create({
-            name: "doctor_test",
-            crm: "1",
-            landline: "3138520776",
-            cellphone: "31938520776",
-            address: createdAddress,
-            specialties: [specialty_1, specialty_2],
-        });
+        const doctor = await doctorRepository.findByCrm("1");
 
         const response = await request(app)
             .put(`/doctors/update/${doctor.id}`)
@@ -217,21 +135,7 @@ describe("Update doctor controller", () => {
     });
 
     it("Should not be able to update a doctor sending a crm with characters that aren't numbers", async () => {
-        const specialty_1 = await specialtyRepository.findByName("Alergologia");
-        const specialty_2 = await specialtyRepository.findByName("Angiologia");
-
-        const address = await addressProvider.getAddress("35930209", 131);
-
-        const createdAddress = await addressRepository.save(address);
-
-        const doctor = await doctorRepository.create({
-            name: "doctor_test",
-            crm: "1",
-            landline: "3138520776",
-            cellphone: "31938520776",
-            address: createdAddress,
-            specialties: [specialty_1, specialty_2],
-        });
+        const doctor = await doctorRepository.findByCrm("1");
 
         const response = await request(app)
             .put(`/doctors/update/${doctor.id}`)
@@ -243,21 +147,7 @@ describe("Update doctor controller", () => {
     });
 
     it("Should not be able to update a doctor sending a invalid landline number", async () => {
-        const specialty_1 = await specialtyRepository.findByName("Alergologia");
-        const specialty_2 = await specialtyRepository.findByName("Angiologia");
-
-        const address = await addressProvider.getAddress("35930209", 131);
-
-        const createdAddress = await addressRepository.save(address);
-
-        const doctor = await doctorRepository.create({
-            name: "doctor_test",
-            crm: "1",
-            landline: "3138520776",
-            cellphone: "31938520776",
-            address: createdAddress,
-            specialties: [specialty_1, specialty_2],
-        });
+        const doctor = await doctorRepository.findByCrm("1");
 
         const response = await request(app)
             .put(`/doctors/update/${doctor.id}`)
@@ -269,21 +159,7 @@ describe("Update doctor controller", () => {
     });
 
     it("Should not be able to update a doctor sending a invalid cellphone number", async () => {
-        const specialty_1 = await specialtyRepository.findByName("Alergologia");
-        const specialty_2 = await specialtyRepository.findByName("Angiologia");
-
-        const address = await addressProvider.getAddress("35930209", 131);
-
-        const createdAddress = await addressRepository.save(address);
-
-        const doctor = await doctorRepository.create({
-            name: "doctor_test",
-            crm: "1",
-            landline: "3138520776",
-            cellphone: "31938520776",
-            address: createdAddress,
-            specialties: [specialty_1, specialty_2],
-        });
+        const doctor = await doctorRepository.findByCrm("1");
 
         const response = await request(app)
             .put(`/doctors/update/${doctor.id}`)
@@ -295,21 +171,7 @@ describe("Update doctor controller", () => {
     });
 
     it("Should not be able to update a doctor sending a cep with less than 8 numbers", async () => {
-        const specialty_1 = await specialtyRepository.findByName("Alergologia");
-        const specialty_2 = await specialtyRepository.findByName("Angiologia");
-
-        const address = await addressProvider.getAddress("35930209", 131);
-
-        const createdAddress = await addressRepository.save(address);
-
-        const doctor = await doctorRepository.create({
-            name: "doctor_test",
-            crm: "1",
-            landline: "3138520776",
-            cellphone: "31938520776",
-            address: createdAddress,
-            specialties: [specialty_1, specialty_2],
-        });
+        const doctor = await doctorRepository.findByCrm("1");
 
         const response = await request(app)
             .put(`/doctors/update/${doctor.id}`)
@@ -321,21 +183,7 @@ describe("Update doctor controller", () => {
     });
 
     it("Should not be able to update a doctor sending a cep with characters that aren't numbers", async () => {
-        const specialty_1 = await specialtyRepository.findByName("Alergologia");
-        const specialty_2 = await specialtyRepository.findByName("Angiologia");
-
-        const address = await addressProvider.getAddress("35930209", 131);
-
-        const createdAddress = await addressRepository.save(address);
-
-        const doctor = await doctorRepository.create({
-            name: "doctor_test",
-            crm: "1",
-            landline: "3138520776",
-            cellphone: "31938520776",
-            address: createdAddress,
-            specialties: [specialty_1, specialty_2],
-        });
+        const doctor = await doctorRepository.findByCrm("1");
 
         const response = await request(app)
             .put(`/doctors/update/${doctor.id}`)
@@ -347,21 +195,7 @@ describe("Update doctor controller", () => {
     });
 
     it("Should not be able to create a doctor sending a non existing cep", async () => {
-        const specialty_1 = await specialtyRepository.findByName("Alergologia");
-        const specialty_2 = await specialtyRepository.findByName("Angiologia");
-
-        const address = await addressProvider.getAddress("35930209", 131);
-
-        const createdAddress = await addressRepository.save(address);
-
-        const doctor = await doctorRepository.create({
-            name: "doctor_test",
-            crm: "1",
-            landline: "3138520776",
-            cellphone: "31938520776",
-            address: createdAddress,
-            specialties: [specialty_1, specialty_2],
-        });
+        const doctor = await doctorRepository.findByCrm("1");
 
         const response = await request(app)
             .put(`/doctors/update/${doctor.id}`)
@@ -373,21 +207,7 @@ describe("Update doctor controller", () => {
     });
 
     it("Should not be able to update a doctor sending a numero that is not a number", async () => {
-        const specialty_1 = await specialtyRepository.findByName("Alergologia");
-        const specialty_2 = await specialtyRepository.findByName("Angiologia");
-
-        const address = await addressProvider.getAddress("35930209", 131);
-
-        const createdAddress = await addressRepository.save(address);
-
-        const doctor = await doctorRepository.create({
-            name: "doctor_test",
-            crm: "1",
-            landline: "3138520776",
-            cellphone: "31938520776",
-            address: createdAddress,
-            specialties: [specialty_1, specialty_2],
-        });
+        const doctor = await doctorRepository.findByCrm("1");
 
         const response = await request(app)
             .put(`/doctors/update/${doctor.id}`)
@@ -399,21 +219,7 @@ describe("Update doctor controller", () => {
     });
 
     it("Should not be able to update a doctor sending a numero that is less than 0", async () => {
-        const specialty_1 = await specialtyRepository.findByName("Alergologia");
-        const specialty_2 = await specialtyRepository.findByName("Angiologia");
-
-        const address = await addressProvider.getAddress("35930209", 131);
-
-        const createdAddress = await addressRepository.save(address);
-
-        const doctor = await doctorRepository.create({
-            name: "doctor_test",
-            crm: "1",
-            landline: "3138520776",
-            cellphone: "31938520776",
-            address: createdAddress,
-            specialties: [specialty_1, specialty_2],
-        });
+        const doctor = await doctorRepository.findByCrm("1");
 
         const response = await request(app)
             .put(`/doctors/update/${doctor.id}`)
@@ -425,21 +231,7 @@ describe("Update doctor controller", () => {
     });
 
     it("Should not be able to update a doctor sending less that 2 specialties", async () => {
-        const specialty_1 = await specialtyRepository.findByName("Alergologia");
-        const specialty_2 = await specialtyRepository.findByName("Angiologia");
-
-        const address = await addressProvider.getAddress("35930209", 131);
-
-        const createdAddress = await addressRepository.save(address);
-
-        const doctor = await doctorRepository.create({
-            name: "doctor_test",
-            crm: "1",
-            landline: "3138520776",
-            cellphone: "31938520776",
-            address: createdAddress,
-            specialties: [specialty_1, specialty_2],
-        });
+        const doctor = await doctorRepository.findByCrm("1");
 
         const response = await request(app)
             .put(`/doctors/update/${doctor.id}`)

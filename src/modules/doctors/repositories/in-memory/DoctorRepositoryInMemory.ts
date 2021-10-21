@@ -4,6 +4,7 @@ import { ICreateDoctorDTO } from "@modules/doctors/dtos/ICreateDoctorDTO";
 import { IFilterDoctorsDTO } from "@modules/doctors/dtos/IFilterDoctorsDTO";
 import { IUpdateDoctorDTO } from "@modules/doctors/dtos/IUpdateDoctorDTO";
 import { Doctor } from "@modules/doctors/infra/typeorm/entities/Doctor";
+import { Specialty } from "@modules/specialties/infra/typeorm/entities/Specialty";
 
 import { IDoctorRepository } from "../IDoctorRepository";
 
@@ -123,7 +124,43 @@ class DoctorRepositoryInMemory implements IDoctorRepository {
         uf,
         specialties_names,
     }: IFilterDoctorsDTO): Promise<Doctor[]> {
-        throw new Error("Method not implemented.");
+        // console.log(this.doctors);
+        const doctorsFilter = this.doctors.filter((doctor) => {
+            if (
+                (name && doctor.name === name) ||
+                (crm && doctor.crm === crm) ||
+                (landline && doctor.landline === landline) ||
+                (cellphone && doctor.cellphone === cellphone) ||
+                (cep && doctor.address.cep === cep) ||
+                (logradouro && doctor.address.logradouro === logradouro) ||
+                (complemento && doctor.address.complemento === complemento) ||
+                (numero && doctor.address.numero === numero) ||
+                (bairro && doctor.address.bairro === bairro) ||
+                (localidade && doctor.address.localidade === localidade) ||
+                (uf && doctor.address.uf === uf) ||
+                (specialties_names &&
+                    this.filterDoctorSpecialties(
+                        doctor.specialties,
+                        specialties_names
+                    ))
+            )
+                return doctor;
+            return null;
+        });
+
+        return doctorsFilter;
+    }
+
+    filterDoctorSpecialties(
+        specialties: Specialty[],
+        specialties_names: string[]
+    ): boolean {
+        const specialtiesFilter = specialties.filter((specialty) =>
+            specialties_names.includes(specialty.name)
+        );
+
+        if (specialtiesFilter.length > 0) return true;
+        return false;
     }
 }
 
