@@ -42,6 +42,17 @@ class UpdateDoctorUseCase {
         numero,
         specialties_names,
     }: IRequest): Promise<Doctor> {
+        if (
+            !name &&
+            !crm &&
+            !landline &&
+            !cellphone &&
+            !cep &&
+            !numero &&
+            !specialties_names
+        )
+            throw new AppError("There's no information to update!");
+
         const doctorExists = await this.doctorRepository.findById(id);
 
         if (!doctorExists) throw new AppError("Doctor doesn't exists!");
@@ -52,6 +63,13 @@ class UpdateDoctorUseCase {
 
         let specialties: Specialty[];
         if (specialties_names) {
+            const duplicateSpecialties = specialties_names.filter(
+                (specialty, i) => specialties_names.indexOf(specialty) !== i
+            );
+
+            if (duplicateSpecialties.length > 0)
+                throw new AppError("Doctor cannot have duplicate specialties!");
+
             specialties = await this.specialtyRepository.findByNames(
                 specialties_names
             );

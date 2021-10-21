@@ -87,4 +87,20 @@ describe("Create doctor", () => {
             })
         ).rejects.toEqual(new AppError("Specialty not found!"));
     });
+
+    it("Should not be able to create a new doctor sending 2 or more duplicate specialties", async () => {
+        await expect(
+            createDoctorUseCase.execute({
+                name: "doctor_test",
+                crm: "1",
+                landline: "3138520776",
+                cellphone: "31938520776",
+                cep: "35930209",
+                numero: 131,
+                specialties_names: ["specialty_test_1", "specialty_test_1"],
+            })
+        ).rejects.toEqual(
+            new AppError("Doctor cannot have duplicate specialties!")
+        );
+    });
 });

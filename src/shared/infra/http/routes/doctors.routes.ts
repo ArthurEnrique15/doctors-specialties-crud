@@ -7,6 +7,7 @@ import { FilterDoctorsController } from "@modules/doctors/useCases/filterDoctors
 import { ListDoctorsController } from "@modules/doctors/useCases/listDoctors/ListDoctorsController";
 import { RecoverDoctorController } from "@modules/doctors/useCases/recoverDoctor/RecoverDoctorController";
 import { UpdateDoctorController } from "@modules/doctors/useCases/updateDoctor/UpdateDoctorController";
+import { AddressProvider } from "@shared/container/providers/addressProvider/implementations/AddressProvider";
 
 const doctorsRoutes = Router();
 
@@ -48,11 +49,14 @@ const doctorCellphoneChain = check("cellphone")
     )
     .withMessage("Invalid cellphone number");
 
+const addressProvider = new AddressProvider();
 const doctorCepChain = check("cep")
     .isLength({ min: 8, max: 8 })
     .withMessage("CEP must have 8 numbers")
     .custom((cep) => RegExp("^[0-9]+$").test(cep) === true)
-    .withMessage("CEP must have only numbers");
+    .withMessage("CEP must have only numbers")
+    .custom((cep) => addressProvider.getAddress(cep, 1))
+    .withMessage("CEP does not exists");
 
 const doctorNumeroChain = check("numero")
     .not()

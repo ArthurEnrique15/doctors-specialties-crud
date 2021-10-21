@@ -208,6 +208,22 @@ describe("Create doctor controller", () => {
         expect(response.status).toBe(400);
     });
 
+    it("Should not be able to create a new doctor sending anon existing cep", async () => {
+        const response = await request(app)
+            .post("/doctors")
+            .send({
+                name: "doctor_test",
+                crm: "2",
+                landline: "3138520776",
+                cellphone: "313852077",
+                cep: "11111111",
+                numero: 131,
+                specialties_names: ["Alergologia", "Angiologia"],
+            });
+
+        expect(response.status).toBe(400);
+    });
+
     it("Should not be able to create a new doctor sending a numero that is not a number", async () => {
         const response = await request(app)
             .post("/doctors")

@@ -57,6 +57,13 @@ class CreateDoctorUseCase {
 
         if (doctorAlreadyExists) throw new AppError("Doctor already exists!");
 
+        const duplicateSpecialties = specialties_names.filter(
+            (specialty, i) => specialties_names.indexOf(specialty) !== i
+        );
+
+        if (duplicateSpecialties.length > 0)
+            throw new AppError("Doctor cannot have duplicate specialties!");
+
         const specialties = await this.specialtyRepository.findByNames(
             specialties_names
         );

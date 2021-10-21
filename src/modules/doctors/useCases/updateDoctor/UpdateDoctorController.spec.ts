@@ -1,74 +1,452 @@
-// import request from "supertest";
-// import { Connection, createConnection } from "typeorm";
-// import { v4 as uuidV4 } from "uuid";
+import request from "supertest";
+import { Connection, createConnection } from "typeorm";
 
-// import { SpecialtyRepository } from "@modules/specialties/infra/typeorm/repositories/SpecialtyRepository";
-// import { app } from "@shared/infra/http/app";
+import { AddressRepository } from "@modules/doctors/infra/typeorm/repositories/AddressRepository";
+import { DoctorRepository } from "@modules/doctors/infra/typeorm/repositories/DoctorRepository";
+import { SpecialtyRepository } from "@modules/specialties/infra/typeorm/repositories/SpecialtyRepository";
+import { AddressProvider } from "@shared/container/providers/addressProvider/implementations/AddressProvider";
+import { app } from "@shared/infra/http/app";
 
-// let connection: Connection;
-// let specialtyRepository: SpecialtyRepository;
+let connection: Connection;
+let doctorRepository: DoctorRepository;
+let addressRepository: AddressRepository;
+let addressProvider: AddressProvider;
+let specialtyRepository: SpecialtyRepository;
 
-// describe("Update specialty controller", () => {
-//     beforeAll(async () => {
-//         connection = await createConnection();
-//         await connection.runMigrations();
-//         specialtyRepository = new SpecialtyRepository();
-//     });
+describe("Update doctor controller", () => {
+    beforeAll(async () => {
+        connection = await createConnection();
+        await connection.runMigrations();
 
-//     afterAll(async () => {
-//         await connection.dropDatabase();
-//         await connection.close();
-//     });
+        doctorRepository = new DoctorRepository();
+        addressProvider = new AddressProvider();
+        addressRepository = new AddressRepository();
+        specialtyRepository = new SpecialtyRepository();
+    });
 
-//     it("Should be able to update a specialty", async () => {
-//         const specialtyCreated = await specialtyRepository.create({
-//             name: "specialty_test",
-//         });
+    afterAll(async () => {
+        await connection.dropDatabase();
+        await connection.close();
+    });
 
-//         const response = await request(app)
-//             .put(`/specialties/update/${specialtyCreated.id}`)
-//             .send({
-//                 name: "updated_specialty_test",
-//                 description: "updated_description_test",
-//             });
+    it("Should be able to update a doctor", async () => {
+        const specialty_1 = await specialtyRepository.findByName("Alergologia");
+        const specialty_2 = await specialtyRepository.findByName("Angiologia");
 
-//         expect(response.status).toBe(200);
-//     });
+        const address = await addressProvider.getAddress("35930209", 131);
 
-//     it("Should not be able to update a specialty that doesn't exists", async () => {
-//         const response = await request(app)
-//             .put(`/specialties/update/${uuidV4()}`)
-//             .send({
-//                 name: "updated_specialty_test",
-//                 description: "updated_description_test",
-//             });
+        const createdAddress = await addressRepository.save(address);
 
-//         expect(response.status).toBe(400);
-//     });
+        const doctor = await doctorRepository.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address: createdAddress,
+            specialties: [specialty_1, specialty_2],
+        });
 
-//     it("Should not be able to update a specialty without sending a name", async () => {
-//         const specialtyCreated = await specialtyRepository.create({
-//             name: "specialty_test",
-//         });
+        const response = await request(app)
+            .put(`/doctors/update/${doctor.id}`)
+            .send({
+                name: "updated_doctor_test",
+                landline: "3138520775",
+                cellphone: "31938520775",
+                cep: "35930201",
+                numero: 2,
+                specialties_names: ["Cirurgia cardíaca", "Angiologia"],
+            });
 
-//         const response = await request(app)
-//             .put(`/specialties/update/${specialtyCreated.id}`)
-//             .send({});
+        expect(response.status).toBe(200);
+    });
 
-//         expect(response.status).toBe(400);
-//     });
+    it("Should not be able to update a doctor sending a non string name", async () => {
+        const specialty_1 = await specialtyRepository.findByName("Alergologia");
+        const specialty_2 = await specialtyRepository.findByName("Angiologia");
 
-//     it("Should not be able to update a specialty sending an existing name", async () => {
-//         const specialtyCreated = await specialtyRepository.create({
-//             name: "specialty_test",
-//         });
+        const address = await addressProvider.getAddress("35930209", 131);
 
-//         const response = await request(app)
-//             .put(`/specialties/update/${specialtyCreated.id}`)
-//             .send({
-//                 name: specialtyCreated.name,
-//             });
+        const createdAddress = await addressRepository.save(address);
 
-//         expect(response.status).toBe(400);
-//     });
-// });
+        const doctor = await doctorRepository.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address: createdAddress,
+            specialties: [specialty_1, specialty_2],
+        });
+
+        const response = await request(app)
+            .put(`/doctors/update/${doctor.id}`)
+            .send({
+                name: 1,
+            });
+
+        expect(response.status).toBe(400);
+    });
+
+    it("Should not be able to update a doctor sending an empty name", async () => {
+        const specialty_1 = await specialtyRepository.findByName("Alergologia");
+        const specialty_2 = await specialtyRepository.findByName("Angiologia");
+
+        const address = await addressProvider.getAddress("35930209", 131);
+
+        const createdAddress = await addressRepository.save(address);
+
+        const doctor = await doctorRepository.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address: createdAddress,
+            specialties: [specialty_1, specialty_2],
+        });
+
+        const response = await request(app)
+            .put(`/doctors/update/${doctor.id}`)
+            .send({
+                name: "",
+            });
+
+        expect(response.status).toBe(400);
+    });
+
+    it("Should not be able to update a doctor sending a name with more than 120 characters", async () => {
+        const specialty_1 = await specialtyRepository.findByName("Alergologia");
+        const specialty_2 = await specialtyRepository.findByName("Angiologia");
+
+        const address = await addressProvider.getAddress("35930209", 131);
+
+        const createdAddress = await addressRepository.save(address);
+
+        const doctor = await doctorRepository.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address: createdAddress,
+            specialties: [specialty_1, specialty_2],
+        });
+
+        const response = await request(app)
+            .put(`/doctors/update/${doctor.id}`)
+            .send({
+                name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            });
+
+        expect(response.status).toBe(400);
+    });
+
+    it("Should not be able to update a doctor sending a non string crm", async () => {
+        const specialty_1 = await specialtyRepository.findByName("Alergologia");
+        const specialty_2 = await specialtyRepository.findByName("Angiologia");
+
+        const address = await addressProvider.getAddress("35930209", 131);
+
+        const createdAddress = await addressRepository.save(address);
+
+        const doctor = await doctorRepository.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address: createdAddress,
+            specialties: [specialty_1, specialty_2],
+        });
+
+        const response = await request(app)
+            .put(`/doctors/update/${doctor.id}`)
+            .send({
+                crm: 1,
+            });
+
+        expect(response.status).toBe(400);
+    });
+
+    it("Should not be able to update a doctor sending an empty crm", async () => {
+        const specialty_1 = await specialtyRepository.findByName("Alergologia");
+        const specialty_2 = await specialtyRepository.findByName("Angiologia");
+
+        const address = await addressProvider.getAddress("35930209", 131);
+
+        const createdAddress = await addressRepository.save(address);
+
+        const doctor = await doctorRepository.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address: createdAddress,
+            specialties: [specialty_1, specialty_2],
+        });
+
+        const response = await request(app)
+            .put(`/doctors/update/${doctor.id}`)
+            .send({
+                crm: "",
+            });
+
+        expect(response.status).toBe(400);
+    });
+
+    it("Should not be able to update a doctor sending a crm with more than 7 numbers", async () => {
+        const specialty_1 = await specialtyRepository.findByName("Alergologia");
+        const specialty_2 = await specialtyRepository.findByName("Angiologia");
+
+        const address = await addressProvider.getAddress("35930209", 131);
+
+        const createdAddress = await addressRepository.save(address);
+
+        const doctor = await doctorRepository.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address: createdAddress,
+            specialties: [specialty_1, specialty_2],
+        });
+
+        const response = await request(app)
+            .put(`/doctors/update/${doctor.id}`)
+            .send({
+                crm: "12345678",
+            });
+
+        expect(response.status).toBe(400);
+    });
+
+    it("Should not be able to update a doctor sending a crm with characters that aren't numbers", async () => {
+        const specialty_1 = await specialtyRepository.findByName("Alergologia");
+        const specialty_2 = await specialtyRepository.findByName("Angiologia");
+
+        const address = await addressProvider.getAddress("35930209", 131);
+
+        const createdAddress = await addressRepository.save(address);
+
+        const doctor = await doctorRepository.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address: createdAddress,
+            specialties: [specialty_1, specialty_2],
+        });
+
+        const response = await request(app)
+            .put(`/doctors/update/${doctor.id}`)
+            .send({
+                crm: "1a",
+            });
+
+        expect(response.status).toBe(400);
+    });
+
+    it("Should not be able to update a doctor sending a invalid landline number", async () => {
+        const specialty_1 = await specialtyRepository.findByName("Alergologia");
+        const specialty_2 = await specialtyRepository.findByName("Angiologia");
+
+        const address = await addressProvider.getAddress("35930209", 131);
+
+        const createdAddress = await addressRepository.save(address);
+
+        const doctor = await doctorRepository.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address: createdAddress,
+            specialties: [specialty_1, specialty_2],
+        });
+
+        const response = await request(app)
+            .put(`/doctors/update/${doctor.id}`)
+            .send({
+                landline: "313852077",
+            });
+
+        expect(response.status).toBe(400);
+    });
+
+    it("Should not be able to update a doctor sending a invalid cellphone number", async () => {
+        const specialty_1 = await specialtyRepository.findByName("Alergologia");
+        const specialty_2 = await specialtyRepository.findByName("Angiologia");
+
+        const address = await addressProvider.getAddress("35930209", 131);
+
+        const createdAddress = await addressRepository.save(address);
+
+        const doctor = await doctorRepository.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address: createdAddress,
+            specialties: [specialty_1, specialty_2],
+        });
+
+        const response = await request(app)
+            .put(`/doctors/update/${doctor.id}`)
+            .send({
+                cellphone: "3193852077",
+            });
+
+        expect(response.status).toBe(400);
+    });
+
+    it("Should not be able to update a doctor sending a cep with less than 8 numbers", async () => {
+        const specialty_1 = await specialtyRepository.findByName("Alergologia");
+        const specialty_2 = await specialtyRepository.findByName("Angiologia");
+
+        const address = await addressProvider.getAddress("35930209", 131);
+
+        const createdAddress = await addressRepository.save(address);
+
+        const doctor = await doctorRepository.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address: createdAddress,
+            specialties: [specialty_1, specialty_2],
+        });
+
+        const response = await request(app)
+            .put(`/doctors/update/${doctor.id}`)
+            .send({
+                cep: "3593020",
+            });
+
+        expect(response.status).toBe(400);
+    });
+
+    it("Should not be able to update a doctor sending a cep with characters that aren't numbers", async () => {
+        const specialty_1 = await specialtyRepository.findByName("Alergologia");
+        const specialty_2 = await specialtyRepository.findByName("Angiologia");
+
+        const address = await addressProvider.getAddress("35930209", 131);
+
+        const createdAddress = await addressRepository.save(address);
+
+        const doctor = await doctorRepository.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address: createdAddress,
+            specialties: [specialty_1, specialty_2],
+        });
+
+        const response = await request(app)
+            .put(`/doctors/update/${doctor.id}`)
+            .send({
+                cep: "3593020a",
+            });
+
+        expect(response.status).toBe(400);
+    });
+
+    it("Should not be able to create a doctor sending a non existing cep", async () => {
+        const specialty_1 = await specialtyRepository.findByName("Alergologia");
+        const specialty_2 = await specialtyRepository.findByName("Angiologia");
+
+        const address = await addressProvider.getAddress("35930209", 131);
+
+        const createdAddress = await addressRepository.save(address);
+
+        const doctor = await doctorRepository.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address: createdAddress,
+            specialties: [specialty_1, specialty_2],
+        });
+
+        const response = await request(app)
+            .put(`/doctors/update/${doctor.id}`)
+            .send({
+                cep: "11111111",
+            });
+
+        expect(response.status).toBe(400);
+    });
+
+    it("Should not be able to update a doctor sending a numero that is not a number", async () => {
+        const specialty_1 = await specialtyRepository.findByName("Alergologia");
+        const specialty_2 = await specialtyRepository.findByName("Angiologia");
+
+        const address = await addressProvider.getAddress("35930209", 131);
+
+        const createdAddress = await addressRepository.save(address);
+
+        const doctor = await doctorRepository.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address: createdAddress,
+            specialties: [specialty_1, specialty_2],
+        });
+
+        const response = await request(app)
+            .put(`/doctors/update/${doctor.id}`)
+            .send({
+                numero: "1",
+            });
+
+        expect(response.status).toBe(400);
+    });
+
+    it("Should not be able to update a doctor sending a numero that is less than 0", async () => {
+        const specialty_1 = await specialtyRepository.findByName("Alergologia");
+        const specialty_2 = await specialtyRepository.findByName("Angiologia");
+
+        const address = await addressProvider.getAddress("35930209", 131);
+
+        const createdAddress = await addressRepository.save(address);
+
+        const doctor = await doctorRepository.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address: createdAddress,
+            specialties: [specialty_1, specialty_2],
+        });
+
+        const response = await request(app)
+            .put(`/doctors/update/${doctor.id}`)
+            .send({
+                numero: -1,
+            });
+
+        expect(response.status).toBe(400);
+    });
+
+    it("Should not be able to update a doctor sending less that 2 specialties", async () => {
+        const specialty_1 = await specialtyRepository.findByName("Alergologia");
+        const specialty_2 = await specialtyRepository.findByName("Angiologia");
+
+        const address = await addressProvider.getAddress("35930209", 131);
+
+        const createdAddress = await addressRepository.save(address);
+
+        const doctor = await doctorRepository.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address: createdAddress,
+            specialties: [specialty_1, specialty_2],
+        });
+
+        const response = await request(app)
+            .put(`/doctors/update/${doctor.id}`)
+            .send({
+                specialties_names: ["Alergologia"],
+            });
+
+        expect(response.status).toBe(400);
+    });
+});
