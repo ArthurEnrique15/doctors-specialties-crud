@@ -2,6 +2,8 @@ import { Response, Request } from "express";
 import { validationResult } from "express-validator";
 import { container } from "tsyringe";
 
+import { IFilterDoctorsDTO } from "@modules/doctors/dtos/IFilterDoctorsDTO";
+
 import { FilterDoctorsUseCase } from "./FilterDoctorsUseCase";
 
 class FilterDoctorsController {
@@ -24,7 +26,7 @@ class FilterDoctorsController {
             localidade,
             uf,
             specialties_names,
-        } = request.body;
+        }: IFilterDoctorsDTO = request.query;
         const listDoctorsUseCase = container.resolve(FilterDoctorsUseCase);
 
         const doctors = await listDoctorsUseCase.execute({

@@ -1,0 +1,572 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Api Test Documentation",
+        "description": "This is the documentation of the Doctors Specialties CRUD",
+        "version": "1.0.0",
+        "contact": {
+            "email": "arthurenrique1512@gmail.com"
+        }
+    },
+    "paths": {
+        "/specialties": {
+            "post": {
+                "tags": ["Specialty"],
+                "summary": "Create a specialty",
+                "description": "Create a new specialty",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#definitions/Specialty"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["Specialty"],
+                "summary": "List all specialties",
+                "description": "List all specialties",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Specialty"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/specialties/update/{id}": {
+            "put": {
+                "tags": ["Specialty"],
+                "summary": "Update a specialty",
+                "description": "Update a specialty",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Specialty id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#definitions/Specialty"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/specialties/delete/{id}": {
+            "delete": {
+                "tags": ["Specialty"],
+                "summary": "Delete a specialty",
+                "description": "Soft delete a specialty",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Specialty id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/specialties/recover/{id}": {
+            "put": {
+                "tags": ["Specialty"],
+                "summary": "Recover a specialty",
+                "description": "Recover a specialty",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Specialty id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recovered"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/doctors": {
+            "post": {
+                "tags": ["Doctor"],
+                "summary": "Create a doctor",
+                "description": "Create a new doctor (doctor must have at least 2 different specialties)",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "DoctorNameExample"
+                                    },
+                                    "crm": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "landline": {
+                                        "type": "string",
+                                        "example": "3138510776"
+                                    },
+                                    "cellphone": {
+                                        "type": "string",
+                                        "example": "31938510776"
+                                    },
+                                    "cep": {
+                                        "type": "string",
+                                        "example": "35930209"
+                                    },
+                                    "numero": {
+                                        "type": "number",
+                                        "example": 131
+                                    },
+                                    "specialties_names": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "example": [
+                                            "Alergologia",
+                                            "Angiologia"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["Doctor"],
+                "summary": "List doctors",
+                "description": "List all doctors",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#definitions/Doctor"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/doctors/update/{id}": {
+            "put": {
+                "tags": ["Doctor"],
+                "summary": "Update a doctor",
+                "description": "Update a doctor",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Doctor id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "DoctorNameExample"
+                                    },
+                                    "crm": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "landline": {
+                                        "type": "string",
+                                        "example": "3138510776"
+                                    },
+                                    "cellphone": {
+                                        "type": "string",
+                                        "example": "31938510776"
+                                    },
+                                    "cep": {
+                                        "type": "string",
+                                        "example": "35930209"
+                                    },
+                                    "numero": {
+                                        "type": "number",
+                                        "example": 131
+                                    },
+                                    "specialties_names": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "example": [
+                                            "Alergologia",
+                                            "Angiologia"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Updated"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/doctors/delete/{id}": {
+            "delete": {
+                "tags": ["Doctor"],
+                "summary": "Delete a doctor",
+                "description": "Delete a doctor",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Doctor id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/doctors/recover/{id}": {
+            "put": {
+                "tags": ["Doctor"],
+                "summary": "Recover a doctor",
+                "description": "Recover a doctor",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Doctor id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recovered"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/doctors/filter": {
+            "get": {
+                "tags": ["Doctor"],
+                "summary": "Filter doctors",
+                "description": "Filter doctors",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string",
+                            "example": "DoctorNameExample"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "crm",
+                        "schema": {
+                            "type": "string",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "landline",
+                        "schema": {
+                            "type": "string",
+                            "example": "3138510776"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "cellphone",
+                        "schema": {
+                            "type": "string",
+                            "example": "31938510776"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "cep",
+                        "schema": {
+                            "type": "string",
+                            "example": "35930209"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "logradouro",
+                        "schema": {
+                            "type": "string",
+                            "example": "Rua Campinas"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "complemento",
+                        "schema": {
+                            "type": "string",
+                            "example": ""
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "numero",
+                        "schema": {
+                            "type": "string",
+                            "example": "131"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "bairro",
+                        "schema": {
+                            "type": "string",
+                            "example": "José Elói"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "localidade",
+                        "schema": {
+                            "type": "string",
+                            "example": "João Monlevade"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "uf",
+                        "schema": {
+                            "type": "string",
+                            "example": "MG"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "specialties_names[0]",
+                        "schema": {
+                            "type": "string",
+                            "example": "Alergologia"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "specialties_names[1]",
+                        "schema": {
+                            "type": "string",
+                            "example": "Angiologia"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Specialty": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "SpecialtyExample"
+                }
+            }
+        },
+        "Address": {
+            "type": "object",
+            "properties": {
+                "cep": {
+                    "type": "string",
+                    "example": "35930209"
+                },
+                "logradouro": {
+                    "type": "string",
+                    "example": "Rua Campinas"
+                },
+                "complemento": {
+                    "type": "string",
+                    "example": ""
+                },
+                "numero": {
+                    "type": "number",
+                    "example": 131
+                },
+                "bairro": {
+                    "type": "string",
+                    "example": "José Elói"
+                },
+                "localidade": {
+                    "type": "string",
+                    "example": "João Monlevade"
+                },
+                "uf": {
+                    "type": "string",
+                    "example": "MG"
+                }
+            }
+        },
+        "Doctor": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "DoctorNameExample"
+                },
+                "crm": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "landline": {
+                    "type": "string",
+                    "example": "3138510776"
+                },
+                "cellphone": {
+                    "type": "string",
+                    "example": "31938510776"
+                },
+                "address": {
+                    "type": "object",
+                    "$ref": "#definitions/Address"
+                },
+                "specialties": {
+                    "type": "array",
+                    "example": [
+                        "Alergologia",
+                        "Angiologia"
+                    ]
+                }
+            }
+        }
+    }
+}
