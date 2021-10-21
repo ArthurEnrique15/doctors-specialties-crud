@@ -53,28 +53,6 @@ class CreateDoctorUseCase {
         numero,
         specialties_names,
     }: IRequest): Promise<IResponse> {
-        // if (name.length > 120)
-        //     throw new AppError("Name must have a maximum of 120 characters!");
-
-        // // verifica se a string tem apenas números
-        // const regex = new RegExp("^[0-9]+$");
-
-        // if (!regex.test(crm) || crm.length > 7)
-        //     throw new AppError("Invalid CRM!");
-
-        // if (!regex.test(landline) || landline.length !== 10)
-        //     throw new AppError("Invalid telefone fixo!");
-
-        // if (
-        //     !regex.test(cellphone) ||
-        //     cellphone.length !== 11 ||
-        //     cellphone[2] !== "9"
-        // )
-        //     throw new AppError("Invalid telefone celular!");
-
-        // if (specialties_names.length < 2)
-        //     throw new AppError("Doctor must have at least 2 specialties!");
-
         const doctorAlreadyExists = await this.doctorRepository.findByCrm(crm);
 
         if (doctorAlreadyExists) throw new AppError("Doctor already exists!");

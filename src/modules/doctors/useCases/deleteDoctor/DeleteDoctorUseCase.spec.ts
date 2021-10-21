@@ -1,33 +1,51 @@
+import { DoctorRepositoryInMemory } from "@modules/doctors/repositories/in-memory/DoctorRepositoryInMemory";
+import { DeleteDoctorUseCase } from "@modules/doctors/useCases/deleteDoctor/DeleteDoctorUseCase";
 import { SpecialtyRepositoryInMemory } from "@modules/specialties/repositories/in-memory/SpecialtyRepositoryInMemory";
-import { DeleteSpecialtyUseCase } from "@modules/specialties/useCases/deleteSpecialty/DeleteSpecialtyUseCase";
+import { AddressProvider } from "@shared/container/providers/addressProvider/implementations/AddressProvider";
 import { AppError } from "@shared/errors/AppError";
 
-let removeSpecialtyUseCase: DeleteSpecialtyUseCase;
+let removeDoctorUseCase: DeleteDoctorUseCase;
+let doctorRepositoryInMemory: DoctorRepositoryInMemory;
+let addressProvider: AddressProvider;
 let specialtyRepositoryInMemory: SpecialtyRepositoryInMemory;
 
-describe("Delete specialty", () => {
+describe("Delete doctor", () => {
     beforeEach(() => {
+        doctorRepositoryInMemory = new DoctorRepositoryInMemory();
+        removeDoctorUseCase = new DeleteDoctorUseCase(doctorRepositoryInMemory);
+
+        addressProvider = new AddressProvider();
         specialtyRepositoryInMemory = new SpecialtyRepositoryInMemory();
-        removeSpecialtyUseCase = new DeleteSpecialtyUseCase(
-            specialtyRepositoryInMemory
-        );
     });
 
-    it("Should be able to remove a specialty", async () => {
-        const specialty = await specialtyRepositoryInMemory.create({
-            name: "specialty_test",
+    it("Should be able to remove a doctor", async () => {
+        const specialty_1 = await specialtyRepositoryInMemory.create({
+            name: "specialty_test_1",
         });
 
-        const specialtyDeleted = await removeSpecialtyUseCase.execute(
-            specialty.id
-        );
+        const specialty_2 = await specialtyRepositoryInMemory.create({
+            name: "specialty_test_2",
+        });
 
-        expect(specialtyDeleted.deleted_at).not.toBe(null);
+        const address = await addressProvider.getAddress("35930209", 131);
+
+        const { id } = await doctorRepositoryInMemory.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address,
+            specialties: [specialty_1, specialty_2],
+        });
+
+        const doctorDeleted = await removeDoctorUseCase.execute(id);
+
+        expect(doctorDeleted.deleted_at).not.toBe(null);
     });
 
-    it("Should not be able to remove a specialty that doesn't exists", async () => {
+    it("Should not be able to remove a doctor that doesn't exists", async () => {
         await expect(
-            removeSpecialtyUseCase.execute("non_existing_id")
-        ).rejects.toEqual(new AppError("Specialty doesn't exists!"));
+            removeDoctorUseCase.execute("non_existing_id")
+        ).rejects.toEqual(new AppError("Doctor doesn't exists!"));
     });
 });

@@ -2,16 +2,26 @@ import request from "supertest";
 import { Connection, createConnection } from "typeorm";
 import { v4 as uuidV4 } from "uuid";
 
+import { AddressRepository } from "@modules/doctors/infra/typeorm/repositories/AddressRepository";
+import { DoctorRepository } from "@modules/doctors/infra/typeorm/repositories/DoctorRepository";
 import { SpecialtyRepository } from "@modules/specialties/infra/typeorm/repositories/SpecialtyRepository";
+import { AddressProvider } from "@shared/container/providers/addressProvider/implementations/AddressProvider";
 import { app } from "@shared/infra/http/app";
 
 let connection: Connection;
+let doctorRepository: DoctorRepository;
+let addressRepository: AddressRepository;
+let addressProvider: AddressProvider;
 let specialtyRepository: SpecialtyRepository;
 
-describe("Delete specialty controller", () => {
+describe("Delete doctor controller", () => {
     beforeAll(async () => {
         connection = await createConnection();
         await connection.runMigrations();
+
+        doctorRepository = new DoctorRepository();
+        addressProvider = new AddressProvider();
+        addressRepository = new AddressRepository();
         specialtyRepository = new SpecialtyRepository();
     });
 
@@ -20,21 +30,33 @@ describe("Delete specialty controller", () => {
         await connection.close();
     });
 
-    it("Should be able to remove a specialty", async () => {
-        const specialty = await specialtyRepository.create({
-            name: "specialty_test",
+    it("Should be able to remove a doctor", async () => {
+        const specialty_1 = await specialtyRepository.findByName("Alergologia");
+        const specialty_2 = await specialtyRepository.findByName("Angiologia");
+
+        const address = await addressProvider.getAddress("35930209", 131);
+
+        const createdAddress = await addressRepository.save(address);
+
+        const { id } = await doctorRepository.create({
+            name: "doctor_test",
+            crm: "1",
+            landline: "3138520776",
+            cellphone: "31938520776",
+            address: createdAddress,
+            specialties: [specialty_1, specialty_2],
         });
 
         const response = await request(app)
-            .delete(`/specialties/delete/${specialty.id}`)
+            .delete(`/doctors/delete/${id}`)
             .send();
 
         expect(response.status).toBe(200);
     });
 
-    it("Should not be able to remove a specialty that doesn't exists", async () => {
+    it("Should not be able to remove a doctor that doesn't exists", async () => {
         const response = await request(app)
-            .delete(`/specialties/delete/${uuidV4()}`)
+            .delete(`/doctors/delete/${uuidV4()}`)
             .send();
 
         expect(response.status).toBe(400);
