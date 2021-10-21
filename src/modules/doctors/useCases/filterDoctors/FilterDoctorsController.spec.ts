@@ -156,20 +156,4 @@ describe("Filter doctors controller", () => {
 
         expect(response.status).toBe(400);
     });
-
-    it("Should not be able to filter doctors sending a numero that is not a number", async () => {
-        const response = await request(app).get("/doctors/filter/").send({
-            numero: "1",
-        });
-
-        expect(response.status).toBe(400);
-    });
-
-    it("Should not be able to filter doctors sending a numero that is less than 0", async () => {
-        const response = await request(app).get("/doctors/filter/").send({
-            numero: -1,
-        });
-
-        expect(response.status).toBe(400);
-    });
 });
