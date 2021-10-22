@@ -105,6 +105,10 @@ make test
 
 > Para a execução dos testes foram utilizadas as bibliotecas `jest` e `supertest`
 > 
+<<<<<<< HEAD
+> O arquivo _run-tests.png_ é um print da saída dos testes.
+=======
+>>>>>>> 3ca8df3f94432511c90a852676def36498e15f99
 
 </br></br>
 
@@ -178,4 +182,6 @@ make test
 ```
 
 > The libraries `jest` and `supertest` where used to run the tests.
+>
+> The file _run-tests.png_ is a printscreen of the tests exit.
 
