@@ -82,7 +82,7 @@ Para executar o sistema, basta utilizar o seguinte comando:
 ```
 make app
 ```
-> O comando `app` executa o serviço `app` do [docker-compose](./docker-compose.yml) e consequentemente os serviços dos quais ele depende, que são o `database` e as `migrations`.
+> O comando _make app_ executa o serviço `app` do [docker-compose](./docker-compose.yml) e consequentemente os serviços dos quais ele depende, que são o `database` e as `migrations`.
 >
 > Assim, a imagem do _postgres_ é baixada, as migrations são executadas juntamente com o dockerfile do projeto e por fim a aplicação é iniciada na porta 3333.
 >
