@@ -104,6 +104,7 @@ make test
 ```
 
 > Para a execução dos testes foram utilizadas as bibliotecas `jest` e `supertest`
+> 
 
 </br></br>
 
