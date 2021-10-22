@@ -39,7 +39,7 @@
 
 [README in English](#readme-in-english)
 
-# Sumário
+## Sumário
 
 * [Sobre](#sobre)
 * [Pré Requisitos](#pré-requisitos)
@@ -109,7 +109,7 @@ make test
 
 # README in English
 
-# Summary
+## Summary
 
 * [About](#about)
 * [Pre Requisites](#pre-requisites)
