@@ -122,7 +122,7 @@ make test
 
 ## About
 
-The system serves to manage doctors and specialties. These are the two entities present in the system, and for each of them it's possible to execute the following actions: **Create**, **Update**, **List**, **Delete** and **Recover**. It's also possible to execute a **Filter** action for the doctors.
+The system is used to manage doctors and specialties. These are the two entities present in the system, and for each of them it's possible to execute the following actions: **Create**, **Update**, **List**, **Delete** and **Recover**. It's also possible to execute a **Filter** action for the doctors.
 
 </br>
 
