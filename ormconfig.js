@@ -14,8 +14,6 @@ const config = {
     username: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
     database,
-    // entities: [`./${dir}/modules/**/infra/typeorm/entities/*.${file}`],
-    // migrations: [`./${dir}/shared/infra/typeorm/migrations/*.${file}`],
     entities: [`./src/modules/**/infra/typeorm/entities/*.ts`],
     migrations: [`./src/shared/infra/typeorm/migrations/*.ts`],
     cli: {
