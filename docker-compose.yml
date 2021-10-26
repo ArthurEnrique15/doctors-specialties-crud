@@ -28,6 +28,7 @@ services:
     app:
         build: .
         container_name: app
+        command: sh -c "dockerize -wait tcp://database:5432 -timeout 300s -wait-retry-interval 1s yarn dev"
         ports:
             - 3333:3333
         volumes: 
@@ -42,7 +43,7 @@ services:
     app_test:
         build: .
         container_name: app_test
-        command: sh -c "yarn test"
+        command: sh -c "sleep 10s && yarn test"
         depends_on:
             - database_test
         networks: 
